@@ -10,7 +10,7 @@ using System.Linq;
 namespace WordPressPCLTests
 {
     [TestClass]
-    public class UnitTest1
+    public class Basic_Tests
     {
         [TestMethod]
         public async Task BasicSetupTest()
@@ -31,6 +31,7 @@ namespace WordPressPCLTests
             var posts = await client.ListPosts();
             var post = await client.GetPost(posts[0].Id);
             Assert.IsTrue(posts[0].Id == post.Id);
+            Assert.IsTrue(!String.IsNullOrEmpty(posts[0].Content.Rendered));
         }
 
         [TestMethod]
@@ -112,6 +113,35 @@ namespace WordPressPCLTests
                 Assert.IsTrue(containsOnContentOrTitle);
             }
         }
+
+
+        [TestMethod]
+        public async Task GetComments()
+        {
+            var client = new WordPressClient(ApiCredentials.WordPressUri);
+            var comments = await client.ListComments();
+
+            if(comments.Count == 0)
+            {
+                Assert.Inconclusive("no comments to test");
+            }
+            
+            foreach (var comment in comments)
+            {
+                // test Date parsing was successfull
+                Assert.IsNotNull(comment.Date);
+                Assert.AreNotEqual(DateTime.Now, comment.Date);
+                Assert.AreNotEqual(DateTime.MaxValue, comment.Date);
+                Assert.AreNotEqual(DateTime.MinValue, comment.Date);
+
+                Assert.IsNotNull(comment.DateGmt);
+                Assert.AreNotEqual(DateTime.Now, comment.DateGmt);
+                Assert.AreNotEqual(DateTime.MaxValue, comment.DateGmt);
+                Assert.AreNotEqual(DateTime.MinValue, comment.DateGmt);
+            }
+
+        }
+
 
         [TestMethod]
         public async Task JWTAuthTest()
