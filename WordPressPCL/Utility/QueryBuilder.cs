@@ -6,38 +6,43 @@ namespace WordPressPCL.Utility
 {
     public class QueryBuilder
     {
-        private string url;
+        private string _url;
         public int Page { get; set; }
         public int Per_Page { get; set; }
         public int Offset { get; set; }
-        public WordPressPCL.Models.OrderBy OrderBy { get; set; }
+        public DateTime After { get; set; }
+        public OrderBy OrderBy { get; set; }
         public bool Embed { get; set; }
-        public QueryBuilder(string url = null)
+        public Context Context { get; set; }
+
+        public QueryBuilder(string wordpressUrl = null)
         {
-            this.url = url;
-            this.Page = 1;
-            this.Per_Page = 10;
-            this.Offset = 0;
-            this.OrderBy = OrderBy.date;
-            this.Embed = false;
+            _url = wordpressUrl;
+            Page = 1;
+            Per_Page = 10;
+            Offset = 0;
+            After = DateTime.MinValue;
+            OrderBy = OrderBy.Date;
+            Embed = false;
+            Context = Context.View;
         }
 
-        internal QueryBuilder SetRootUrl(string _url) 
+        internal QueryBuilder SetRootUrl(string url) 
         {
-            this.url = _url;
+            _url = url;
             return this;
         }
 
         public override string ToString()
         {
-            if (String.IsNullOrEmpty(this.url)) return string.Empty;
+            if (String.IsNullOrEmpty(_url)) return string.Empty;
             else
             {
-                StringBuilder sb = new StringBuilder(url);
+                StringBuilder sb = new StringBuilder(_url);
                 if (Page > 1)
                 {
-                    sb.Append(appendQuery(this.url, PAGE_QUERYSTRING));
-                    sb.Append(this.Page);
+                    sb.Append(appendQuery(_url, PAGE_QUERYSTRING));
+                    sb.Append(Page);
                 }
                 if (Embed)
                 {
@@ -46,17 +51,22 @@ namespace WordPressPCL.Utility
                 if (Per_Page != 10)
                 {
                     sb.Append(appendQuery(sb.ToString(), PER_PAGE_QUERYSTRING));
-                    sb.Append(this.Per_Page);
+                    sb.Append(Per_Page);
                 }
                 if (Offset > 0)
                 {
                     sb.Append(appendQuery(sb.ToString(), OFFSET_QUERYSTRING));
-                    sb.Append(this.Offset);
+                    sb.Append(Offset);
                 }
-                if (OrderBy != OrderBy.date)
+                if (After != DateTime.MinValue)
+                {
+                    sb.Append(appendQuery(sb.ToString(), AFTER_QUERYSTRING));
+                    sb.Append(After.ToString("yyyy-MM-ddTHH:mm:ss"));
+                }
+                if (OrderBy != OrderBy.Date)
                 {
                     sb.Append(appendQuery(sb.ToString(), ORDER_BY_QUERYSTRING));
-                    sb.Append(Convert.ToInt32(this.OrderBy));
+                    sb.Append(Convert.ToInt32(OrderBy));
                 }
                 //Console.WriteLine(sb.ToString());
                 return sb.ToString();
@@ -72,7 +82,8 @@ namespace WordPressPCL.Utility
         private const string PAGE_QUERYSTRING = "page";
         private const string EMBED_QUERYSTRING = "_embed";        
         private const string PER_PAGE_QUERYSTRING = "per_page";        
-        private const string OFFSET_QUERYSTRING = "offset";        
+        private const string OFFSET_QUERYSTRING = "offset";
+        private const string AFTER_QUERYSTRING = "after";
         private const string ORDER_BY_QUERYSTRING = "orderby";
         private const string QUESTION_MARK = "?";
         private const string AMPERSAND = "&";

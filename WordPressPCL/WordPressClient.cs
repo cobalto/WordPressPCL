@@ -153,6 +153,13 @@ namespace WordPressPCL
             return post;
         }
 
+        public async Task<Post> UpdatePost(Post postObject)
+        {
+            var postBody = new StringContent(JsonConvert.SerializeObject(postObject).ToString(), Encoding.UTF8, "application/json");
+            (var post, HttpResponseMessage response) = await PostRequest<Post>($"{defaultPath}posts/{postObject.Id}", postBody);
+            return post;
+        }
+
         public async Task<HttpResponseMessage> DeletePost(int id)
         {
             var response = await DeleteRequest($"{defaultPath}posts/{id}").ConfigureAwait(false);
@@ -214,6 +221,16 @@ namespace WordPressPCL
         {
             return await GetRequest<User>($"{defaultPath}users/me", true, true).ConfigureAwait(false);
         }
+
+        public async Task<IList<User>> ListUsers()
+        {
+            return await GetRequest<IList<User>>($"{defaultPath}users", false, false).ConfigureAwait(false);
+        }
+
+        public async Task<User> GetUser(int id)
+        {
+            return await GetRequest<User>($"{defaultPath}users/{id}", false, false).ConfigureAwait(false);
+        }
         #endregion
 
         #region Media methods
@@ -230,6 +247,13 @@ namespace WordPressPCL
 
 
 
+        #endregion
+
+        #region Settings methods
+        public async Task<Settings> GetSettings()
+        {
+            return await GetRequest<Settings>($"{defaultPath}settings", false, true).ConfigureAwait(false);
+        }
         #endregion
 
         #region auth methods
