@@ -1,27 +1,19 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace WordPressPCL.Models
 {
-    public class Page
+    /// <summary>
+    /// Type represents Page Entity of WP REST API
+    /// </summary>
+    public class Page : Base
     {
-        /// <summary>
-        /// Unique identifier for the object.
-        /// </summary>
-        /// <remarks>
-        /// Read only
-        /// Context: view, edit, embed
-        /// </remarks>
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
         /// <summary>
         /// The date the object was published, in the site’s timezone.
         /// </summary>
         /// <remarks>Context: view, edit, embed</remarks>
-        [JsonProperty("date")]
+        [JsonProperty("date", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTime Date { get; set; }
 
         /// <summary>
@@ -38,7 +30,7 @@ namespace WordPressPCL.Models
         /// Read only
         /// Context: view, edit
         /// </remarks>
-        [JsonProperty("guid")]
+        [JsonProperty("guid", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Guid Guid { get; set; }
 
         /// <summary>
@@ -48,7 +40,7 @@ namespace WordPressPCL.Models
         /// Read only
         /// Context: view, edit
         /// </remarks>
-        [JsonProperty("modified")]
+        [JsonProperty("modified", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTime Modified { get; set; }
 
         /// <summary>
@@ -58,7 +50,7 @@ namespace WordPressPCL.Models
         /// Read only
         /// Context: view, edit
         /// </remarks>
-        [JsonProperty("modified_gmt")]
+        [JsonProperty("modified_gmt", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTime ModifiedGmt { get; set; }
 
         /// <summary>
@@ -76,7 +68,7 @@ namespace WordPressPCL.Models
         /// One of: publish, future, draft, pending, private
         /// </remarks>
         [JsonProperty("status")]
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
         /// <summary>
         /// Type of Post for the object.
@@ -123,7 +115,7 @@ namespace WordPressPCL.Models
         /// The id for the author of the object.
         /// </summary>
         /// <remarks>Context: view, edit, embed</remarks>
-        [JsonProperty("author")]
+        [JsonProperty("author", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int Author { get; set; }
 
         /// <summary>
@@ -137,7 +129,7 @@ namespace WordPressPCL.Models
         /// The id for the parent of the object.
         /// </summary>
         /// <remarks>Context: view, edit</remarks>
-        [JsonProperty("parent")]
+        [JsonProperty("parent", DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
         public int Parent { get; set; }
 
         /// <summary>
@@ -155,7 +147,7 @@ namespace WordPressPCL.Models
         /// One of: open, closed
         /// </remarks>
         [JsonProperty("comment_status")]
-        public Status CommentStatus { get; set; }
+        public OpenStatus CommentStatus { get; set; }
 
         /// <summary>
         /// Whether or not the object can be pinged.
@@ -165,33 +157,39 @@ namespace WordPressPCL.Models
         /// One of: open, closed
         /// </remarks>
         [JsonProperty("ping_status")]
-        public Status PingStatus { get; set; }
+        public OpenStatus PingStatus { get; set; }
 
         /// <summary>
         /// The theme file to use to display the object.
         /// </summary>
         /// <remarks>Context: view, edit</remarks>
-        [JsonProperty("template")]
+        [JsonProperty("template", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Template { get; set; }
 
         /// <summary>
         /// Meta fields.
         /// </summary>
         /// <remarks>Context: view, edit</remarks>
-        [JsonProperty("meta")]
+        [JsonProperty("meta", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public IList<object> Meta { get; set; }
 
         /// <summary>
         /// Links to related resources
         /// </summary>
-        [JsonProperty("_links")]
+        [JsonProperty("_links", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Links Links { get; set; }
 
         /// <summary>
         /// Embedded information like featured images
         /// </summary>
-        [JsonProperty("_embedded")]
+        [JsonProperty("_embedded", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Embedded Embedded { get; set; }
-    }
 
+        /// <summary>
+        /// Parameterless constructor
+        /// </summary>
+        public Page()
+        {
+        }
+    }
 }
