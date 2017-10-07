@@ -33,6 +33,18 @@ namespace WordPressPCL
         public string Password { get; set; }*/
 
         /// <summary>
+        /// Function called when a HttpRequest response to WordPress APIs are readed 
+        /// Executed before trying to convert json content to a TClass object.
+        /// </summary>
+        public Func<string, string> HttpResponsePreProcessing
+        {
+            set
+            {
+                _httpHelper.HttpResponsePreProcessing = value;
+            }
+        }
+
+        /// <summary>
         /// Authentication method
         /// </summary>
         public AuthMethod AuthMethod { get; set; }
@@ -130,9 +142,9 @@ namespace WordPressPCL
         /// Get site settings
         /// </summary>
         /// <returns>Site settings</returns>
-        public async Task<Settings> GetSettings()
+        public Task<Settings> GetSettings()
         {
-            return await _httpHelper.GetRequest<Settings>($"{defaultPath}settings", false, true).ConfigureAwait(false);
+            return _httpHelper.GetRequest<Settings>($"{defaultPath}settings", false, true);
         }
 
         /// <summary>
@@ -171,6 +183,14 @@ namespace WordPressPCL
                 //JWToken = jwtUser?.Token;
                 _httpHelper.JWToken = jwtUser?.Token;
             }
+        }
+
+        /// <summary>
+        /// Forget the JWT Auth Token
+        /// </summary>
+        public void Logout()
+        {
+            _httpHelper.JWToken = default(string);
         }
 
         /// <summary>
