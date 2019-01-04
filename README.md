@@ -1,6 +1,5 @@
 # WordPressPCL
-This is a portable library for consuimg the WordPress REST-API in (almost) any C# application.
-The project is still very much in *beta* so use at your own risk! 
+This is a portable library for consuming the WordPress REST-API in (almost) any C# application.
 If you find bugs or have any suggestions, feel free to create an issue.
 
 ## License
@@ -22,7 +21,7 @@ The WordPressPCL API Wrapper is avaiable through [NuGet](https://www.nuget.org/p
 ```
 
 ## Supported Plattforms
-WordPressPCL is built on top of the new [.NET Standard](https://github.com/dotnet/standard) targeting netstandard version 1.1 - therefore it should work on the following plaforms:
+WordPressPCL is built on top of the new [.NET Standard](https://github.com/dotnet/standard) targeting netstandard versions 1.1 and 2.0 - therefore it should work on the following plaforms:
 * .NET Framework 4.5 and newer
 * .NET Core
 * Universal Windows Platform (uap)
@@ -77,13 +76,13 @@ var response = client.Posts.Delete(postid);
 
 ## Additional Features
 
-- Authenticaiton using [JSON Web Tokens (JWT)](https://jwt.io/)
+- Authentication using [JSON Web Tokens (JWT)](https://jwt.io/)
 - [HttpResponsePreProcessing](https://github.com/wp-net/WordPressPCL/wiki/HttpResponsePreProcessing): manipulate the API response before deserializing it
 
 ## Contribution Guidelines
 We're very happy to get input from the community on this project! To keep the code clean we ask you to follow a few simple contribution guidelines.
 
-First, create an issue describing what feature you want to add of what problem you're trying to solve, just to make sure no one is already working on that. That also gives us a chance to debate whether a feature is wihtin the scope of this project.
+First, create an issue describing what feature you want to add or what problem you're trying to solve, just to make sure no one is already working on that. That also gives us a chance to debate whether a feature is within the scope of this project.
 
 Second, please try to stick to the official C# coding guidelines. https://msdn.microsoft.com/en-us/library/ms229002(v=vs.110).aspx
 

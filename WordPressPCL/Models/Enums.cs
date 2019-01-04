@@ -67,22 +67,28 @@ namespace WordPressPCL.Models
     public enum CommentStatus
     {
         /// <summary>
+        /// Comment is pending to approve
+        /// </summary>
+        [EnumMember(Value = "hold")]
+        Pending,
+
+        /// <summary>
         /// Comment Approved
         /// </summary>
         [EnumMember(Value = "approved")]
-        Approve,
-
-        /// <summary>
-        /// Comment is pending to approve
-        /// </summary>
-        [EnumMember(Value = "pending")]
-        Pending,
+        Approved,
 
         /// <summary>
         /// Comment is spam
         /// </summary>
         [EnumMember(Value = "spam")]
         Spam,
+
+        /// <summary>
+        /// Comment is in trash
+        /// </summary>
+        [EnumMember(Value = "trash")]
+        Trash,
     }
 
     /// <summary>
@@ -420,18 +426,18 @@ namespace WordPressPCL.Models
     /// Order By direction
     /// </summary>
     public enum Order
-    {
-        /// <summary>
-        /// Ascending direction
-        /// </summary>
-        [EnumMember(Value = "asc")]
-        ASC,
-
+    {        
         /// <summary>
         /// Descending direction
         /// </summary>
         [EnumMember(Value = "desc")]
-        DESC
+        DESC,
+
+        /// <summary>
+        /// Ascending direction
+        /// </summary>
+        [EnumMember(Value = "asc")]
+        ASC
     }
 
     /// <summary>
@@ -511,42 +517,5 @@ namespace WordPressPCL.Models
         /// </summary>
         [EnumMember(Value = "application")]
         Application
-    }
-
-    /// <summary>
-    /// Type attribution for the term.
-    /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum TermTaxonomy
-    {
-        /// <summary>
-        /// Category
-        /// </summary>
-        [EnumMember(Value = "category")]
-        Category,
-
-        /// <summary>
-        /// Post Tag
-        /// </summary>
-        [EnumMember(Value = "post_tag")]
-        PostTag,
-
-        /// <summary>
-        /// Nav Menu
-        /// </summary>
-        [EnumMember(Value = "nav_menu")]
-        NavMenu,
-
-        /// <summary>
-        /// Link Category
-        /// </summary>
-        [EnumMember(Value = "link_category")]
-        LinkCategory,
-
-        /// <summary>
-        /// Post Format
-        /// </summary>
-        [EnumMember(Value = "post_format")]
-        PostFormat
     }
 }

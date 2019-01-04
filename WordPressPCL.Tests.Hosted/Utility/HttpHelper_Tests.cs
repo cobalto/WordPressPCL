@@ -4,15 +4,28 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WordPressPCL.Models;
 
-namespace WordPressPCLTests.Utility
+namespace WordPressPCL.Tests.Hosted.Utility
 {
     [TestClass]
     public class HttpHelper_Tests
     {
-        [TestMethod]
-        public async Task HttpHelper_InvalidPreProcessing()
+        private static WordPressClient _client;
+
+        [ClassInitialize]
+        public static void Init(TestContext testContext)
         {
-            var client = await ClientHelper.GetAuthenticatedWordPressClient();
+            _client = ClientHelper.GetWordPressClient();
+        }
+
+        [TestMethod]
+        public async Task Hosted_HttpHelper_InvalidPreProcessing()
+        {
+            // AUTHENTICATION DOES NOT YET WORK FOR HOSTED SITES
+            var client = new WordPressClient(ApiCredentials.WordPressUri)
+            {
+                AuthMethod = AuthMethod.JWT
+            };
+            await client.RequestJWToken(ApiCredentials.Username, ApiCredentials.Password);
 
             // Create a random tag , must works:
             var random = new Random();
@@ -36,21 +49,24 @@ namespace WordPressPCLTests.Utility
             // Now we add a PreProcessing task
             client.HttpResponsePreProcessing = (response) =>
             {
-                throw new InvalidOperationException("PreProcessing must failed");
+                throw new InvalidOperationException("PreProcessing must fail");
             };
-
-            tags = await client.Tags.GetAll();
-            Assert.IsNotNull(tags);
-            Assert.AreEqual(0, tags.Count());
-            CollectionAssert.AllItemsAreUnique(tags.Select(e => e.Id).ToList());
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () =>
+            {
+                await client.Tags.GetAll();
+            });
         }
 
         [TestMethod]
-        public async Task HttpHelper_ValidPreProcessing()
+        public async Task Hosted_HttpHelper_ValidPreProcessing()
         {
-            var client = await ClientHelper.GetAuthenticatedWordPressClient();
+            var client = new WordPressClient(ApiCredentials.WordPressUri)
+            {
+                AuthMethod = AuthMethod.JWT
+            };
+            await client.RequestJWToken(ApiCredentials.Username, ApiCredentials.Password);
 
-            // Create a random tag , must works:
+            // Create a random tag
             var random = new Random();
             var tagname = $"Test {random.Next(0, 1000)}";
             var tag = await client.Tags.Create(new Tag()

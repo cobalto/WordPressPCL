@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -99,18 +100,21 @@ namespace WordPressPCL.Models
         /// URL to the object.
         /// </summary>
         /// <remarks>Context: view, edit, embed</remarks>
+        [JsonProperty("link")]
         public string Link { get; set; }
 
         /// <summary>
         /// State of the object.
         /// </summary>
         /// <remarks>Context: view, edit</remarks>
+        [JsonProperty("status", DefaultValueHandling = DefaultValueHandling.Ignore)]
 		public CommentStatus Status { get; set; }
 
         /// <summary>
         /// Type of Comment for the object.
         /// </summary>
         /// <remarks>Context: view, edit, embed</remarks>
+        [JsonProperty("type")]
 		public string Type { get; set; }
 
         /// <summary>
@@ -118,12 +122,13 @@ namespace WordPressPCL.Models
         /// </summary>
         /// <remarks>Context: view, edit</remarks>
         [JsonProperty("meta", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IEnumerable<object> Meta { get; set; }
+        public dynamic Meta { get; set; }
 
         /// <summary>
         /// Karma for the object.
         /// </summary>
         /// <remarks>Context: edit</remarks>
+        [JsonProperty("karma")]
         public int Karma { get; set; }
 
         /// <summary>

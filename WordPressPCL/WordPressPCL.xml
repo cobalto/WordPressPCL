@@ -427,7 +427,7 @@
         </member>
         <member name="M:WordPressPCL.Client.PostStatuses.Get(System.Boolean,System.Boolean)">
             <summary>
-            Get latest
+            Get latest Post Statuses
             </summary>
             <param name="embed">include embed info</param>
             <param name="useAuth">Send request with authenication header</param>
@@ -746,6 +746,26 @@
             Avatar URL 96x96 pixels
             </summary>
         </member>
+        <member name="T:WordPressPCL.Models.BadRequest">
+            <summary>
+            Model for unsuccessful request
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Models.BadRequest.Name">
+            <summary>
+            Error type
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Models.BadRequest.Message">
+            <summary>
+            Error description
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Models.BadRequest.Data">
+            <summary>
+            Additional info
+            </summary>
+        </member>
         <member name="T:WordPressPCL.Models.Base">
             <summary>
             Base class for Models
@@ -783,6 +803,17 @@
         <member name="P:WordPressPCL.Models.Category.Parent">
             <summary>
             The parent term ID.
+                  </remarks>
+        </member>
+        <member name="P:WordPressPCL.Models.Category.Description">
+            <summary>
+            HTML description of the term.
+            </summary>
+            <remarks>Context: view, edit</remarks>
+        </member>
+        <member name="P:WordPressPCL.Models.Category.Parent">
+            <summary>
+            The parent term ID.
             </summary>
             <remarks>Context: view, edit</remarks>
         </member>
@@ -799,7 +830,7 @@
         </member>
         <member name="M:WordPressPCL.Models.Category.#ctor(System.String)">
             <summary>
-            
+            Default constructor
             </summary>
             <param name="name"></param>
         </member>
@@ -879,18 +910,7 @@
             <summary>
             The content for the object.
             <see cref="T:WordPressPCL.Models.Content"/>
-            </summary>
-            <remarks>Context: view, edit, embed</remarks>
-        </member>
-        <member name="P:WordPressPCL.Models.Comment.Link">
-            <summary>
-            URL to the object.
-            </summary>
-            <remarks>Context: view, edit, embed</remarks>
-        </member>
-        <member name="P:WordPressPCL.Models.Comment.Status">
-            <summary>
-            State of the object.
+            <      State of the object.
             </summary>
             <remarks>Context: view, edit</remarks>
         </member>
@@ -928,6 +948,18 @@
             </summary>
             <param name="postId">Post ID</param>
             <param name="content">Comment content</param>
+        </member>
+        <member name="T:WordPressPCL.Models.CommentThreaded">
+            <summary>
+            An extension class for Comment that holds a depth porperty
+            for displaying threaded comments
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Models.CommentThreaded.Depth">
+            <summary>
+            The depht of a comment
+            0 is a top level comments without parent
+            </summary>
         </member>
         <member name="T:WordPressPCL.Models.Embedded">
             <summary>
@@ -1009,19 +1041,24 @@
             Status of Comments
             </summary>
         </member>
-        <member name="F:WordPressPCL.Models.CommentStatus.Approve">
-            <summary>
-            Comment Approved
-            </summary>
-        </member>
         <member name="F:WordPressPCL.Models.CommentStatus.Pending">
             <summary>
             Comment is pending to approve
             </summary>
         </member>
+        <member name="F:WordPressPCL.Models.CommentStatus.Approved">
+            <summary>
+            Comment Approved
+            </summary>
+        </member>
         <member name="F:WordPressPCL.Models.CommentStatus.Spam">
             <summary>
             Comment is spam
+            </summary>
+        </member>
+        <member name="F:WordPressPCL.Models.CommentStatus.Trash">
+            <summary>
+            Comment is in trash
             </summary>
         </member>
         <member name="T:WordPressPCL.Models.MediaQueryStatus">
@@ -1300,14 +1337,14 @@
             Order By direction
             </summary>
         </member>
-        <member name="F:WordPressPCL.Models.Order.ASC">
-            <summary>
-            Ascending direction
-            </summary>
-        </member>
         <member name="F:WordPressPCL.Models.Order.DESC">
             <summary>
             Descending direction
+            </summary>
+        </member>
+        <member name="F:WordPressPCL.Models.Order.ASC">
+            <summary>
+            Ascending direction
             </summary>
         </member>
         <member name="T:WordPressPCL.Models.Context">
@@ -1374,34 +1411,60 @@
             Application
             </summary>
         </member>
-        <member name="T:WordPressPCL.Models.TermTaxonomy">
+        <member name="T:WordPressPCL.Models.WPException">
             <summary>
-            Type attribution for the term.
+            WordPress request exceptions
             </summary>
         </member>
-        <member name="F:WordPressPCL.Models.TermTaxonomy.Category">
+        <member name="M:WordPressPCL.Models.WPException.#ctor(WordPressPCL.Models.BadRequest)">
             <summary>
-            Category
+            default constructor
+            </summary>
+            <param name="request">additional request info</param>
+        </member>
+        <member name="M:WordPressPCL.Models.WPException.#ctor(System.String,WordPressPCL.Models.BadRequest)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="message">additional message</param>
+            <param name="request">additional request info</param>
+        </member>
+        <member name="M:WordPressPCL.Models.WPException.#ctor(System.String,System.Exception,WordPressPCL.Models.BadRequest)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="message">additional message</param>
+            <param name="inner">inner exception</param>
+            <param name="request">additional request info</param>
+        </member>
+        <member name="P:WordPressPCL.Models.WPException.RequestData">
+            <summary>
+            Bad request data info
             </summary>
         </member>
-        <member name="F:WordPressPCL.Models.TermTaxonomy.PostTag">
+        <member name="T:WordPressPCL.Models.WPUnexpectedException">
             <summary>
-            Post Tag
+            An exception resulting from a malformed WP response from a
+            WP REST call, where the response is still a valid (but not
+            successful) HTTP response. For example, the response returned
+            from an endpoint that is not a WP REST endpoint
             </summary>
         </member>
-        <member name="F:WordPressPCL.Models.TermTaxonomy.NavMenu">
+        <member name="M:WordPressPCL.Models.WPUnexpectedException.#ctor(System.Net.Http.HttpResponseMessage,System.String)">
             <summary>
-            Nav Menu
+            Construct a WPUnexpectedException from a response
+            </summary>
+            <param name="response">The raw response</param>
+            <param name="resonseBody">The response body, if any</param>     
+        </member>
+        <member name="P:WordPressPCL.Models.WPUnexpectedException.Response">
+            <summary>
+            The response that triggered the error
             </summary>
         </member>
-        <member name="F:WordPressPCL.Models.TermTaxonomy.LinkCategory">
+        <member name="P:WordPressPCL.Models.WPUnexpectedException.ResponseBody">
             <summary>
-            Link Category
-            </summary>
-        </member>
-        <member name="F:WordPressPCL.Models.TermTaxonomy.PostFormat">
-            <summary>
-            Post Format
+            The response body (if any) that was returned with the error status
             </summary>
         </member>
         <member name="T:WordPressPCL.Models.ImageMeta">
@@ -1431,6 +1494,20 @@
             </summary>
         </member>
         <member name="P:WordPressPCL.Models.ImageMeta.CreatedTimestamp">
+            <summary>
+            Created Date
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Models.ImageMeta.Copyright">
+            <summary>
+            Copyright
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Models.ImageMeta.FocalLength">
+            <summary>
+            Focal Length
+            </summary>
+   ">
             <summary>
             Created Date
             </summary>
@@ -1560,17 +1637,7 @@
         </member>
         <member name="P:WordPressPCL.Models.MediaDetails.ImageMeta">
             <summary>
-            Meta info of Image
-            </summary>
-        </member>
-        <member name="T:WordPressPCL.Models.MediaItem">
-            <summary>
-            Type represent Media Entity of WP REST API
-            </summary>
-        </member>
-        <member name="P:WordPressPCL.Models.MediaItem.Date">
-            <summary>
-            The date the object was published, in the site’s timezone.
+            Me
             </summary>
             <remarks>Context: view, edit, embed</remarks>
         </member>
@@ -3145,6 +3212,19 @@
             </summary>
             <remarks>Default: comment</remarks>
         </member>
+        <member name="T:WordPressPCL.Utility.CustomCapabilitiesJsonConverter">
+            <summary>
+            Custom JSON converter to convert string values to boolean in capabitilities and extra_capabilities properties
+            <see cref="P:WordPressPCL.Models.User.Capabilities"/>
+            <see cref="P:WordPressPCL.Models.User.ExtraCapabilities"/>
+            </summary>
+        </member>
+        <member name="M:WordPressPCL.Utility.CustomCapabilitiesJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Boolean,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="M:WordPressPCL.Utility.CustomCapabilitiesJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Boolean,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
         <member name="T:WordPressPCL.Utility.HttpHelper">
             <summary>
             Helper class incapsulates common HTTP requests methods
@@ -3157,8 +3237,19 @@
         </member>
         <member name="P:WordPressPCL.Utility.HttpHelper.HttpResponsePreProcessing">
             <summary>
-            Function called when a HttpRequest response is readed 
+            Function called when a HttpRequest response is readed
             Executed before trying to convert json content to a TClass object.
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Utility.HttpHelper.JsonSerializerSettings">
+            <summary>
+            Serialization/Deserialization settings for Json.NET library
+            https://www.newtonsoft.com/json/help/html/SerializationSettings.htm
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Utility.HttpHelper.LastResponseHeaders">
+            <summary>
+            Headers returns by WP and http server from last response
             </summary>
         </member>
         <member name="M:WordPressPCL.Utility.HttpHelper.#ctor(System.String)">
@@ -3361,6 +3452,14 @@
             </summary>
         </member>
         <member name="P:WordPressPCL.Utility.PagesQueryBuilder.Slugs">
+            <summary>
+            Limit result set to posts with one or more specific slugs.
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.Utility.PagesQueryBuilder.Statuses">
+            <summary>
+            Limit result set to posts assigned one or more statuses.
+            </summa        <member name="P:WordPressPCL.Utility.PagesQueryBuilder.Slugs">
             <summary>
             Limit result set to posts with one or more specific slugs.
             </summary>
@@ -3602,11 +3701,22 @@
             Helper class to creat threaded comment views
             </summary>
         </member>
-        <member name="M:WordPressPCL.Utility.ThreadedCommentsHelper.GetThreadedComments(System.Collections.Generic.IEnumerable{WordPressPCL.Models.Comment})">
+        <member name="M:WordPressPCL.Utility.ThreadedCommentsHelper.GetThreadedComments(System.Collections.Generic.IEnumerable{WordPressPCL.Models.Comment},System.Int32,System.Boolean)">
             <summary>
             This method returns the comments sorted for a threaded view (oldest first)
             inlcuding the depth of a comment
             </summary>
+            <param name="comments">list of comments which will be ordered</param>
+            <param name="maxDepth">max hierachy depth</param>
+            <param name="isDescending">order by descending</param>
+        </member>
+        <member name="M:WordPressPCL.Utility.ThreadedCommentsHelper.ToThreaded(System.Collections.Generic.IEnumerable{WordPressPCL.Models.Comment},System.Boolean)">
+            <summary>
+            Extension method: Get Threaded comments from ordinary comments
+            </summary>
+            <param name="comments">Comments which will be threaded</param>
+            <param name="isDescending">Newest comments should be shown first</param>
+            <returns>List of threaded comments</returns>
         </member>
         <member name="T:WordPressPCL.Utility.UsersQueryBuilder">
             <summary>
@@ -3674,8 +3784,14 @@
         </member>
         <member name="P:WordPressPCL.WordPressClient.HttpResponsePreProcessing">
             <summary>
-            Function called when a HttpRequest response to WordPress APIs are readed 
+            Function called when a HttpRequest response to WordPress APIs are readed
             Executed before trying to convert json content to a TClass object.
+            </summary>
+        </member>
+        <member name="P:WordPressPCL.WordPressClient.JsonSerializerSettings">
+            <summary>
+            Serialization/Deserialization settings for Json.NET library
+            https://www.newtonsoft.com/json/help/html/SerializationSettings.htm
             </summary>
         </member>
         <member name="P:WordPressPCL.WordPressClient.AuthMethod">
@@ -3738,11 +3854,12 @@
             Custom Request client interaction object
             </summary>
         </member>
-        <member name="M:WordPressPCL.WordPressClient.#ctor(System.String)">
+        <member name="M:WordPressPCL.WordPressClient.#ctor(System.String,System.String)">
             <summary>
                 The WordPressClient holds all connection infos and provides methods to call WordPress APIs.
             </summary>
             <param name="uri">URI for WordPress API endpoint, e.g. "http://demo.wp-api.org/wp-json/"</param>
+            <param name="defaultPath">Points to the standard API endpoints</param>
         </member>
         <member name="M:WordPressPCL.WordPressClient.GetSettings">
             <summary>
@@ -3774,6 +3891,18 @@
             Check if token is valid
             </summary>
             <returns>Result of checking</returns>
+        </member>
+        <member name="M:WordPressPCL.WordPressClient.SetJWToken(System.String)">
+            <summary>
+            Sets an exisitng JWToken
+            </summary>
+            <param name="token"></param>
+        </member>
+        <member name="M:WordPressPCL.WordPressClient.GetToken">
+            <summary>
+            Gets the JWToken from the client
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using WordPressPCL.Utility;
 
 namespace WordPressPCL.Models
 {
@@ -116,14 +118,14 @@ namespace WordPressPCL.Models
         /// All capabilities assigned to the user.
         /// </summary>
         /// <remarks>Context: edit</remarks>
-        [JsonProperty("capabilities", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty("capabilities", DefaultValueHandling = DefaultValueHandling.Ignore, ItemConverterType = typeof(CustomCapabilitiesJsonConverter))]
         public IDictionary<string, bool> Capabilities { get; set; }
 
         /// <summary>
         /// Any extra capabilities assigned to the user.
         /// </summary>
         /// <remarks>Context: edit</remarks>
-        [JsonProperty("extra_capabilities", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty("extra_capabilities", DefaultValueHandling = DefaultValueHandling.Ignore, ItemConverterType = typeof (CustomCapabilitiesJsonConverter))]
         public IDictionary<string, bool> ExtraCapabilities { get; set; }
 
         /// <summary>
@@ -141,7 +143,7 @@ namespace WordPressPCL.Models
         /// </summary>
         /// <remarks>Context: view, edit</remarks>
         [JsonProperty("meta", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IEnumerable<object> Meta { get; set; }
+        public dynamic Meta { get; set; }
 
         /// <summary>
         /// Links to related resources
